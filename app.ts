@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
-import connectDB from './src/configs/db';
+import connectDB from './src/configs/mongo';
 import { config } from 'dotenv';
 import cors from 'cors';
+import redis from './src/configs/redis';
 
 config();
 const PORT = process.env.PORT || 3000;
