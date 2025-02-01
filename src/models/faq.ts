@@ -12,7 +12,16 @@ const faqSchema = new mongoose.Schema(
     },
     translations: {
       type: Map,
-      of: String,
+      of: new mongoose.Schema({
+        question: {
+          type: String,
+          required: true,
+        },
+        answer: {
+          type: String,
+          required: true,
+        },
+      }),
     },
   },
   {
