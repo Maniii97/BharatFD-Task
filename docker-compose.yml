@@ -1,0 +1,36 @@
+
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URL=${DB_URL}
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      - mongo
+      - redis
+    command: ["npx", "ts-node", "app.ts"]
+
+  mongo:
+    image: mongo
+    container_name: mongo_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:

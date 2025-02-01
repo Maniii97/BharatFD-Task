@@ -11,7 +11,7 @@ const getFAQs = async (req: Request, res: Response) => {
       res.status(200).send(JSON.parse(cachedData));
       return;
     }
-    console.log("the code is getting here even after answered from cache")
+    console.log("the code is getting here even after answered from cache");
     const faqs = await FAQ.find();
     const translatedFaqs = await Promise.all(
       faqs.map(
@@ -21,14 +21,18 @@ const getFAQs = async (req: Request, res: Response) => {
           question: string;
           toObject: () => any;
         }) => {
-            const translatedQuestion =
-              faq.translations?.get(lang)?.question ||
-              (await translateText(faq.question, lang));
-            const translatedAnswer =
-              faq.translations?.get(lang)?.answer ||
-              (await translateText(faq.answer, lang));
-            return { ...faq.toObject(), question: translatedQuestion, answer: translatedAnswer };
-          }
+          const translatedQuestion =
+            faq.translations?.get(lang)?.question ||
+            (await translateText(faq.question, lang));
+          const translatedAnswer =
+            faq.translations?.get(lang)?.answer ||
+            (await translateText(faq.answer, lang));
+          return {
+            ...faq.toObject(),
+            question: translatedQuestion,
+            answer: translatedAnswer,
+          };
+        }
       )
     );
 
@@ -56,11 +60,14 @@ const addFAQ = async (req: Request, res: Response) => {
 
     const newFAQ = new FAQ({ question, answer, translations });
     await newFAQ.save();
+    redis.set("faqs:en", JSON.stringify(newFAQ));
     console.log("New FAQ added : " + newFAQ);
 
     res.status(201).json(newFAQ);
   } catch (error) {
-    console.log("Error occured : @/controllers/faqController/addFAQ : " + error);
+    console.log(
+      "Error occured : @/controllers/faqController/addFAQ : " + error
+    );
     res.status(500).send("Internal Server Error");
   }
 };
