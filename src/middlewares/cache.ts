@@ -6,7 +6,7 @@ const cacheMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const lang = (req.query.lang as string);
+  const lang = (req.query.lang as string) || "en";
   const cachedData = await redis.get(`faqs:${lang}`);
 
   if (cachedData) {
