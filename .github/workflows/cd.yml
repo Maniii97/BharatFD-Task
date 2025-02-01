@@ -42,8 +42,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_IMAGE }}
             
             # Stop and remove the old container if it exists (ignore errors if it doesn't)
-            docker stop bfdd || true
-            docker rm bfdd || true
+            docker stop $(docker ps -q)
             
             # Run the new container in detached mode
-            docker run -d --name bfdd -p 3000:3000 --env-file .env ${{ secrets.DOCKER_IMAGE }}
+            docker run -d -p 3000:3000 --env-file .env ${{ secrets.DOCKER_IMAGE }}
