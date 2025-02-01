@@ -9,6 +9,7 @@ This project is a multilingual FAQ API built with **TypeScript, Express, MongoDB
 - **Redis Caching** - Improves performance by caching translations.
 - **Docker & Deployment** - Fully containerized for easy deployment on AWS EC2.
 - **Unit Testing** - Jest and Supertest for API testing.
+- **Continous Deployment** - Wrote pipeline for auto deploying to AWS EC2 everytime main branch is changed.
 
 ## 🛠 Installation
 
