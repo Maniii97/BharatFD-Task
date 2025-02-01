@@ -60,6 +60,7 @@ const addFAQ = async (req: Request, res: Response) => {
 
     const newFAQ = new FAQ({ question, answer, translations });
     await newFAQ.save();
+    redis.set("faqs:en", JSON.stringify(newFAQ));
     console.log("New FAQ added : " + newFAQ);
 
     res.status(201).json(newFAQ);
